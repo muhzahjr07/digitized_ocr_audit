@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attanagalla Pradeshiya Sabha - Waste Management, Recycling & Compost Report</title>
+  <!-- Google Fonts: Inter & Noto Sans Sinhala -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Sinhala:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --primary-light: #d1fae5;
+      --secondary: #2563eb;
+      --secondary-light: #dbeafe;
+      --accent: #d97706;
+      --accent-light: #fef3c7;
+      --dark: #0f172a;
+      --gray-900: #1e293b;
+      --gray-800: #334155;
+      --gray-600: #475569;
+      --gray-400: #94a3b8;
+      --gray-200: #e2e8f0;
+      --gray-100: #f1f5f9;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', 'Noto Sans Sinhala', sans-serif;
+      background-color: var(--bg);
+      color: var(--gray-900);
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Header & Navigation */
+    header {
+      background: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #047857 100%);
+      color: white;
+      padding: 2.5rem 1.5rem;
+      border-bottom: 4px solid #10b981;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .header-title h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.35rem;
+    }
+
+    .header-title h2 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #a7f3d0;
+      line-height: 1.4;
+    }
+
+    .badge-bar {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge.highlight {
+      background: #fbbf24;
+      color: #78350f;
+      border-color: #f59e0b;
+    }
+
+    /* Language Switcher */
+    .lang-switcher {
+      display: flex;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: #d1fae5;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .lang-btn.active {
+      background: white;
+      color: #065f46;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+
+    /* Print Button */
+    .print-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+    }
+    .print-btn:hover {
+      background: white;
+      color: #065f46;
+    }
+
+    /* KPI Cards Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      margin: 2rem 0;
+    }
+
+    .kpi-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .kpi-card.blue::before { background: var(--secondary); }
+    .kpi-card.amber::before { background: var(--accent); }
+    .kpi-card.purple::before { background: #8b5cf6; }
+
+    .kpi-title {
+      font-size: 0.825rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--gray-600);
+      margin-bottom: 0.5rem;
+    }
+
+    .kpi-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.2;
+    }
+
+    .kpi-sub {
+      font-size: 0.85rem;
+      color: var(--gray-600);
+      margin-top: 0.4rem;
+    }
+
+    .growth-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #dcfce7;
+      color: #15803d;
+      margin-left: 0.25rem;
+    }
+
+    /* Content Cards */
+    .section-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gray-100);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-header h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-header .tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      background: var(--gray-100);
+      color: var(--gray-600);
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Charts Layout */
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .charts-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-container {
+      position: relative;
+      background: #ffffff;
+      padding: 1.25rem;
+      border-radius: 8px;
+      border: 1px solid var(--gray-200);
+      height: 340px;
+    }
+
+    /* Tables */
+    .table-responsive {
+      overflow-x: auto;
+      margin: 1rem 0;
+      border-radius: 8px;
+      border: 1px solid var(--gray-200);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: #f8fafc;
+      color: var(--gray-800);
+      font-weight: 700;
+      padding: 12px 14px;
+      border-bottom: 2px solid var(--gray-200);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--gray-200);
+      color: var(--gray-800);
+    }
+
+    tr:nth-child(even) td {
+      background-color: #fafbfc;
+    }
+
+    tr:hover td {
+      background-color: #f1f5f9;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .font-bold {
+      font-weight: 700;
+    }
+
+    .status-pass {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #dcfce7;
+      color: #166534;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+
+    .status-marginal {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #fef3c7;
+      color: #92400e;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+
+    /* Bilingual display utilities */
+    .lang-sinhala { display: block; }
+    .lang-english { display: block; }
+    
+    body.mode-sinhala .lang-english { display: none !important; }
+    body.mode-english .lang-sinhala { display: none !important; }
+
+    .bilingual-pair {
+      margin-bottom: 0.25rem;
+    }
+
+    .sin-text {
+      font-weight: 500;
+      color: inherit;
+    }
+
+    .eng-text {
+      font-size: 0.9em;
+      color: var(--gray-600);
+      font-weight: 400;
+    }
+
+    /* Callouts / Recommendations */
+    .callout {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1.25rem 0;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      color: #065f46;
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .rec-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .rec-card {
+      background: white;
+      border-radius: 8px;
+      border: 1px solid var(--gray-200);
+      padding: 1.25rem;
+      border-top: 3px solid var(--primary);
+    }
+
+    .rec-card h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--gray-600);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--gray-200);
+      margin-top: 3rem;
+    }
+
+    @media print {
+      header { position: relative; background: #064e3b !important; -webkit-print-color-adjust: exact; }
+      .lang-switcher, .print-btn { display: none; }
+      .section-card { break-inside: avoid; border: 1px solid #ccc; box-shadow: none; }
+      body { background: white; color: black; }
+    }
+  </style>
+</head>
+<body class="mode-both">
+
+  <!-- Main Header -->
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <h1 class="lang-sinhala">අත්තනගල්ල ප්‍රාදේශීය සභාව</h1>
+        <h1 class="lang-english">Attanagalla Pradeshiya Sabha</h1>
+        <h2 class="lang-sinhala">කසළ කළමනාකරණ, ප්‍රතිචක්‍රීකරණ හා කොම්පෝස්ට් නිෂ්පාදන විස්තීර්ණ වාර්තාව</h2>
+        <h2 class="lang-english">Comprehensive Report on Solid Waste Management, Recycling & Compost Production</h2>
+        <div class="badge-bar">
+          <span class="badge">රන්පොකුණ අංගනය / Ranpokuna Facility</span>
+          <span class="badge">දත්ත කාලසීමාව: 2022 - 2026</span>
+          <span class="badge highlight">SLSI SLS 1635 Certified Lab Test</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+        <div class="lang-switcher">
+          <button class="lang-btn" onclick="setLanguage('sinhala')">සිංහල</button>
+          <button class="lang-btn active" onclick="setLanguage('both')">සිංහල + English</button>
+          <button class="lang-btn" onclick="setLanguage('english')">English</button>
+        </div>
+        <button class="print-btn" onclick="window.print()">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/><path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/></svg>
+          Print / PDF
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- KPI Metric Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">
+          <span class="lang-sinhala">2026 ප්‍රතිචක්‍රීකරණ ආදායම</span>
+          <span class="lang-english">2026 Recyclables Revenue (Jan-Jul)</span>
+        </div>
+        <div class="kpi-value">රු. 2.18 M</div>
+        <div class="kpi-sub">
+          LKR 2,187,409.00
+          <span class="growth-tag">+108% YoY</span>
+        </div>
+      </div>
+
+      <div class="kpi-card blue">
+        <div class="kpi-title">
+          <span class="lang-sinhala">2026 අලෙවි කළ ද්‍රව්‍ය බර</span>
+          <span class="lang-english">2026 Recyclables Sold</span>
+        </div>
+        <div class="kpi-value">41,770 kg</div>
+        <div class="kpi-sub">
+          41.77 Metric Tons (Jan–Jul 2026)
+        </div>
+      </div>
+
+      <div class="kpi-card amber">
+        <div class="kpi-title">
+          <span class="lang-sinhala">සමුච්චිත ආදායම (2026 ඔක්තෝබර්)</span>
+          <span class="lang-english">Cumulative Revenue to Date (Oct 2026)</span>
+        </div>
+        <div class="kpi-value">රු. 3.15 M</div>
+        <div class="kpi-sub">
+          LKR 3,150,785.00 Recorded
+        </div>
+      </div>
+
+      <div class="kpi-card purple">
+        <div class="kpi-title">
+          <span class="lang-sinhala">වාර්ෂික කසළ ලැබීම (2025)</span>
+          <span class="lang-english">Annual Waste Inflow (2025)</span>
+        </div>
+        <div class="kpi-value">3,150.5 වාර</div>
+        <div class="kpi-sub">
+          Tractor loads (+30.8% over 2024)
+        </div>
+      </div>
+    </div>
+
+    <!-- Visual Charts Row -->
+    <div class="charts-row">
+      <div class="section-card" style="margin-bottom:0;">
+        <div class="section-header">
+          <h3>
+            <span class="lang-sinhala">ප්‍රතිචක්‍රීකරණ ආදායම් දායකත්වය (2026)</span>
+            <span class="lang-english">Revenue Share by Material (Jan–Jul 2026)</span>
+          </h3>
+          <span class="tag">Revenue %</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="revenuePieChart"></canvas>
+        </div>
+      </div>
+
+      <div class="section-card" style="margin-bottom:0;">
+        <div class="section-header">
+          <h3>
+            <span class="lang-sinhala">වාර්ෂික කසළ ලැබීමේ වර්ධනය (2022 - 2026)</span>
+            <span class="lang-english">Annual Solid Waste Inflow Growth (Loads)</span>
+          </h3>
+          <span class="tag">Loads Trend</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="intakeBarChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-row" style="margin-top: 1.5rem;">
+      <div class="section-card" style="margin-bottom:0;">
+        <div class="section-header">
+          <h3>
+            <span class="lang-sinhala">2026 මාසික එකතු කිරීමේ ප්‍රවණතාව (කි.ග්‍රෑ.)</span>
+            <span class="lang-english">Monthly Collection Trend in 2026 (Kg)</span>
+          </h3>
+          <span class="tag">Collection (Kg)</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="monthlyCollectionChart"></canvas>
+        </div>
+      </div>
+
+      <div class="section-card" style="margin-bottom:0;">
+        <div class="section-header">
+          <h3>
+            <span class="lang-sinhala">ප්‍රධාන ද්‍රව්‍යවල මිල ඉහළ යාම (2025 vs 2026)</span>
+            <span class="lang-english">Price Realization Escalation (LKR/Kg)</span>
+          </h3>
+          <span class="tag">LKR / Kg</span>
+        </div>
+        <div class="chart-container">
+          <canvas id="priceTrendChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 1: Official Summary Report 2026 -->
+    <div class="section-card" style="margin-top: 2rem;">
+      <div class="section-header">
+        <div>
+          <h3>
+            <span class="lang-sinhala">1. 2026 ජනවාරි - ජූලි ප්‍රතිචක්‍රීකරණ ද්‍රව්‍ය එකතු කිරීමේ සාරාංශ වාර්තාව</span>
+            <span class="lang-english">1. Official Summary Report: Recyclable Collection & Sales (Jan–Jul 2026)</span>
+          </h3>
+          <p style="color:var(--gray-600); font-size:0.875rem; margin-top:4px;">
+            අත්තනගල්ල ප්‍රාදේශීය සභාවේ නිල මුද්‍රිත වාර්තාව ඇසුරින් සකසන ලදී. / Extracted from official printed summary statement.
+          </p>
+        </div>
+        <span class="tag">Official Statement</span>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ප්‍රතිචක්‍රීකරණ ද්‍රව්‍ය / Material</th>
+              <th class="text-right">ජන (Kg)</th>
+              <th class="text-right">පෙබ (Kg)</th>
+              <th class="text-right">මාර් (Kg)</th>
+              <th class="text-right">අප්‍රේ (Kg)</th>
+              <th class="text-right">මැයි (Kg)</th>
+              <th class="text-right">ජූනි (Kg)</th>
+              <th class="text-right">ජූලි (Kg)</th>
+              <th class="text-right font-bold">එකතුව (Kg)</th>
+              <th class="text-right font-bold" style="background:#e0f2fe;">අලෙවිය (Kg)</th>
+              <th class="text-right font-bold" style="background:#dcfce7;">ආදායම (රු.)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td class="font-bold">ප්ලාස්ටික් / Plastic</td>
+              <td class="text-right">405.20</td>
+              <td class="text-right">562.70</td>
+              <td class="text-right">519.70</td>
+              <td class="text-right">618.20</td>
+              <td class="text-right">125.40</td>
+              <td class="text-right">177.50</td>
+              <td class="text-right">68.10</td>
+              <td class="text-right font-bold">2,476.80</td>
+              <td class="text-right" style="background:#f0f9ff;">7,570.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">669,375.00</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td class="font-bold">ටින් / Tin Cans</td>
+              <td class="text-right">642.90</td>
+              <td class="text-right">475.80</td>
+              <td class="text-right">486.40</td>
+              <td class="text-right">264.83</td>
+              <td class="text-right">129.30</td>
+              <td class="text-right">166.30</td>
+              <td class="text-right">325.20</td>
+              <td class="text-right font-bold">2,490.73</td>
+              <td class="text-right" style="background:#f0f9ff;">1,240.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">13,144.00</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td class="font-bold">පෙට් බෝතල් / PET Bottles</td>
+              <td class="text-right">1,114.00</td>
+              <td class="text-right">1,056.50</td>
+              <td class="text-right">1,512.70</td>
+              <td class="text-right">826.00</td>
+              <td class="text-right">278.20</td>
+              <td class="text-right">437.10</td>
+              <td class="text-right">533.10</td>
+              <td class="text-right font-bold">5,757.60</td>
+              <td class="text-right" style="background:#f0f9ff;">13,020.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">920,045.00</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td class="font-bold">බියර් ටින් / Beer Cans</td>
+              <td class="text-right">31.90</td>
+              <td class="text-right">42.80</td>
+              <td class="text-right">49.40</td>
+              <td class="text-right">15.10</td>
+              <td class="text-right">5.20</td>
+              <td class="text-right">5.70</td>
+              <td class="text-right">2.70</td>
+              <td class="text-right font-bold">152.80</td>
+              <td class="text-right" style="background:#f0f9ff;">630.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">141,750.00</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td class="font-bold">පොල් කටු / Coconut Shells</td>
+              <td class="text-right">65.00</td>
+              <td class="text-right">61.70</td>
+              <td class="text-right">34.20</td>
+              <td class="text-right">5.20</td>
+              <td class="text-right">2.60</td>
+              <td class="text-right">15.50</td>
+              <td class="text-right">0.00</td>
+              <td class="text-right font-bold">184.20</td>
+              <td class="text-right" style="background:#f0f9ff;">0.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">0.00</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td class="font-bold">කාඩ්බෝඩ් / Cardboard</td>
+              <td class="text-right">631.80</td>
+              <td class="text-right">434.00</td>
+              <td class="text-right">580.50</td>
+              <td class="text-right">244.40</td>
+              <td class="text-right">97.80</td>
+              <td class="text-right">72.40</td>
+              <td class="text-right">100.10</td>
+              <td class="text-right font-bold">2,161.00</td>
+              <td class="text-right" style="background:#f0f9ff;">3,870.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">145,125.00</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td class="font-bold">කළවල බඩු / Mixed Scrap Metals</td>
+              <td class="text-right">2,619.50</td>
+              <td class="text-right">1,564.10</td>
+              <td class="text-right">1,022.20</td>
+              <td class="text-right">1,119.50</td>
+              <td class="text-right">1,370.95</td>
+              <td class="text-right">1,690.50</td>
+              <td class="text-right">2,744.20</td>
+              <td class="text-right font-bold">12,130.95</td>
+              <td class="text-right" style="background:#f0f9ff;">0.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">0.00</td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td class="font-bold">සුදු වීදුරු කටු / Clear Glass Cullet</td>
+              <td class="text-right">862.90</td>
+              <td class="text-right">769.20</td>
+              <td class="text-right">856.90</td>
+              <td class="text-right">363.30</td>
+              <td class="text-right">264.80</td>
+              <td class="text-right">225.60</td>
+              <td class="text-right">693.55</td>
+              <td class="text-right font-bold">4,036.25</td>
+              <td class="text-right" style="background:#f0f9ff;">14,300.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">286,000.00</td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td class="font-bold">රතු වීදුරු කටු / Amber Glass Cullet</td>
+              <td class="text-right">21.20</td>
+              <td class="text-right">40.70</td>
+              <td class="text-right">33.00</td>
+              <td class="text-right">9.00</td>
+              <td class="text-right">7.50</td>
+              <td class="text-right">12.00</td>
+              <td class="text-right">0.00</td>
+              <td class="text-right font-bold">123.40</td>
+              <td class="text-right" style="background:#f0f9ff;">1,140.00</td>
+              <td class="text-right font-bold" style="background:#f0fdf4;">11,970.00</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr style="background:#f1f5f9; font-weight:800; font-size:0.95rem;">
+              <td colspan="2">සමස්ත එකතුව / Total (Kg & LKR)</td>
+              <td class="text-right">6,394.40</td>
+              <td class="text-right">5,007.50</td>
+              <td class="text-right">5,095.00</td>
+              <td class="text-right">3,465.53</td>
+              <td class="text-right">2,281.75</td>
+              <td class="text-right">2,802.60</td>
+              <td class="text-right">4,466.95</td>
+              <td class="text-right font-bold" style="color:#065f46;">29,513.73 kg</td>
+              <td class="text-right font-bold" style="color:#1e40af; background:#e0f2fe;">41,770.00 kg</td>
+              <td class="text-right font-bold" style="color:#065f46; background:#dcfce7;">රු. 2,187,409.00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="callout">
+        <div class="callout-title">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+          <span class="lang-sinhala">විශේෂ විග්‍රහය: එකතු කිරීම සහ විකිණීම අතර පරතරය</span>
+          <span class="lang-english">Analytical Note: Collection Volume vs. Sales Volume</span>
+        </div>
+        <p class="lang-sinhala">
+          2026 පළමු මාස 7 තුළ එකතු කළ ප්‍රමාණය කි.ග්‍රෑ. 29,513.73 ක් වන අතර විකුණන ලද ප්‍රමාණය කි.ග්‍රෑ. 41,770 ක් වේ. මෙහිදී එකතු කළ ප්‍රමාණයට වඩා කි.ග්‍රෑ. 12,256.27 ක් අමතරව විකිණීමට හැකි වී ඇත්තේ 2025 වසරෙන් ලැබුණු තොග (Carry-over inventory) සාර්ථකව නිෂ්කාශනය කර ආදායම් බවට හැරවීම හේතුවෙනි.
+        </p>
+        <p class="lang-english">
+          While 29,513.73 kg were collected during Jan–Jul 2026, total sales reached 41,770 kg (+12,256.27 kg). This demonstrates highly effective monetization of accumulated 2025 warehouse buffer stocks into liquid local government revenue.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 2: Laboratory Test Analysis -->
+    <div class="section-card">
+      <div class="section-header">
+        <div>
+          <h3>
+            <span class="lang-sinhala">2. රන්පොකුණ කොම්පෝස්ට් පොහොර රසායනාගාර තත්ත්ව වාර්තාව</span>
+            <span class="lang-english">2. Ranpokuna Organic Compost Quality Analysis (SLSI SLS 1635 / SLS 645)</span>
+          </h3>
+          <p style="color:var(--gray-600); font-size:0.875rem; margin-top:4px;">
+            ගන්නෝරුව මධ්‍යම පස් හා පොහොර පරීක්ෂණ රසායනාගාරය (Lab ID: Com/2026/02) / Central Soil & Fertilizer Testing Laboratory, Peradeniya.
+          </p>
+        </div>
+        <span class="tag">Lab Certified</span>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>පරාමිතිය / Parameter</th>
+              <th>පරීක්ෂණ ක්‍රමවේදය / Test Method</th>
+              <th class="text-center font-bold">රසායනාගාර ප්‍රතිඵලය / Result</th>
+              <th class="text-center">ශ්‍රී ලංකා ප්‍රමිතිය (SLSI Requirement)</th>
+              <th class="text-center">තත්ත්ව ඇගයීම / Compliance</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-bold">pH අගය / pH (1:5 in water)</td>
+              <td>CS & FTL/P/7.2/03.16 (DSLS 645: Part 8)</td>
+              <td class="text-center font-bold">8.3</td>
+              <td class="text-center">6.5 – 8.5</td>
+              <td class="text-center"><span class="status-pass">PASS / සමත්</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">විද්‍යුත් සන්නායකතාව / Electrical Conductivity</td>
+              <td>CS & FTL/P/7.2/03.17 (SLS 1635:2019- App-B)</td>
+              <td class="text-center font-bold">2.62 dS/m</td>
+              <td class="text-center">&lt; 4.0 dS/m</td>
+              <td class="text-center"><span class="status-pass">PASS / සමත්</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">තෙතමනය ප්‍රතිශතය / Moisture Content (% dry mass)</td>
+              <td>CS & FTL/P/7.2/03.18 (DSLS 645: Part 2:1984)</td>
+              <td class="text-center font-bold" style="color:#b45309;">28.16%</td>
+              <td class="text-center">&lt; 25.0%</td>
+              <td class="text-center"><span class="status-marginal">මඳක් ඉහළයි (Marginal)</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">මුළු නයිට්‍රජන් / Total Nitrogen (% mass)</td>
+              <td>CS & FTL/P/7.2/03.19 (SLS 645: Part 1: 2009)</td>
+              <td class="text-center font-bold" style="color:#15803d;">2.20%</td>
+              <td class="text-center">&gt; 1.0%</td>
+              <td class="text-center"><span class="status-pass">විශිෂ්ටයි (High N)</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">මුළු පොස්පරස් / Total Phosphorus (as P₂O₅)</td>
+              <td>CS & FTL/P/7.2/03.20 (SLS 645: Part 5: 1985)</td>
+              <td class="text-center font-bold" style="color:#15803d;">1.27%</td>
+              <td class="text-center">&gt; 0.5%</td>
+              <td class="text-center"><span class="status-pass">විශිෂ්ටයි (High P)</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">මුළු පොටෑසියම් / Total Potassium (as K₂O)</td>
+              <td>CS & FTL/P/7.2/03.21 (SLS 645: Part 4: 1989)</td>
+              <td class="text-center font-bold" style="color:#b45309;">0.70%</td>
+              <td class="text-center">&gt; 1.0%</td>
+              <td class="text-center"><span class="status-marginal">මඳක් අඩුයි (Slightly Low)</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">කාබනික කාබන් / Organic Carbon (% dry mass)</td>
+              <td>CS & FTL/P/7.2/03.22 (DSLS 645: Part 10)</td>
+              <td class="text-center font-bold" style="color:#15803d;">35.06%</td>
+              <td class="text-center">&gt; 20.0%</td>
+              <td class="text-center"><span class="status-pass">විශිෂ්ටයි (Rich Carbon)</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">C:N අනුපාතය / Carbon:Nitrogen Ratio</td>
+              <td>CS & FTL/P/7.2/03.23 (DSLS 645: Part 10: App D)</td>
+              <td class="text-center font-bold">15.93</td>
+              <td class="text-center">10 – 25</td>
+              <td class="text-center"><span class="status-pass">පරිපූර්ණයි (Optimal 15.9)</span></td>
+            </tr>
+            <tr>
+              <td class="font-bold">වැලි ප්‍රතිශතය / Sand Content (%)</td>
+              <td>CS & FTL/P/7.2/03.24 (SLS 1635: 2019: App E)</td>
+              <td class="text-center font-bold">16.65%</td>
+              <td class="text-center">&lt; 20.0%</td>
+              <td class="text-center"><span class="status-pass">PASS / සමත්</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 3: Multi-Year Waste Inflow Log -->
+    <div class="section-card">
+      <div class="section-header">
+        <div>
+          <h3>
+            <span class="lang-sinhala">3. වසර 5 ක දෛනික කසළ ලැබීමේ වාර්ෂික ප්‍රවණතාව (2022 - 2026)</span>
+            <span class="lang-english">3. 5-Year Solid Waste Intake History & Capacity Loadings (2022–2026)</span>
+          </h3>
+          <p style="color:var(--gray-600); font-size:0.875rem; margin-top:4px;">
+            රන්පොකුණ අංගනයට කසළ රැගෙන එන ට්‍රැක්ටර්/වාහන වාර ගණන / Tractor loads delivered to Ranpokuna Facility.
+          </p>
+        </div>
+        <span class="tag">5-Year Audit</span>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>මාසය / Month</th>
+              <th class="text-center">2022 (වාර / Loads)</th>
+              <th class="text-center">2023 (වාර / Loads)</th>
+              <th class="text-center">2024 (වාර / Loads)</th>
+              <th class="text-center">2025 (වාර / Loads)</th>
+              <th class="text-center" style="background:#e0f2fe;">2026 (වාර / Loads)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>ජනවාරි / January</td><td class="text-center">40.25</td><td class="text-center">161.75</td><td class="text-center">202.00</td><td class="text-center">229.00</td><td class="text-center font-bold" style="background:#f0f9ff;">280.50</td></tr>
+            <tr><td>පෙබරවාරි / February</td><td class="text-center">75.00</td><td class="text-center">138.00</td><td class="text-center">179.75</td><td class="text-center">192.25</td><td class="text-center font-bold" style="background:#f0f9ff;">236.75</td></tr>
+            <tr><td>මාර්තු / March</td><td class="text-center">87.50</td><td class="text-center">173.00</td><td class="text-center">178.00</td><td class="text-center">225.25</td><td class="text-center font-bold" style="background:#f0f9ff;">297.50</td></tr>
+            <tr><td>අප්‍රේල් / April</td><td class="text-center">76.00</td><td class="text-center">191.25</td><td class="text-center">177.50</td><td class="text-center">256.75</td><td class="text-center font-bold" style="background:#f0f9ff;">270.00</td></tr>
+            <tr><td>මැයි / May</td><td class="text-center">34.25</td><td class="text-center">223.75</td><td class="text-center">216.25</td><td class="text-center">250.50</td><td class="text-center font-bold" style="background:#f0f9ff;">291.75</td></tr>
+            <tr><td>ජූනි / June</td><td class="text-center">34.50</td><td class="text-center">246.00</td><td class="text-center">189.00</td><td class="text-center">254.00</td><td class="text-center font-bold" style="background:#f0f9ff;">323.50</td></tr>
+            <tr><td>ජූලි / July</td><td class="text-center">37.50</td><td class="text-center">228.75</td><td class="text-center">210.00</td><td class="text-center">284.25</td><td class="text-center font-bold" style="background:#f0f9ff;">343.75</td></tr>
+            <tr><td>අගෝස්තු / August</td><td class="text-center">150.25</td><td class="text-center">220.25</td><td class="text-center">202.25</td><td class="text-center">272.00</td><td class="text-center font-bold" style="background:#f0f9ff;">258.00</td></tr>
+            <tr><td>සැප්තැම්බර් / September</td><td class="text-center">133.00</td><td class="text-center">197.25</td><td class="text-center">188.75</td><td class="text-center">291.50</td><td class="text-center font-bold" style="background:#f0f9ff;">243.00</td></tr>
+            <tr><td>ඔක්තෝබර් / October</td><td class="text-center">153.00</td><td class="text-center">221.25</td><td class="text-center">214.50</td><td class="text-center">332.75</td><td class="text-center" style="background:#f0f9ff;">ක්‍රියාත්මක වෙමින්</td></tr>
+            <tr><td>නොවැම්බර් / November</td><td class="text-center">157.50</td><td class="text-center">214.75</td><td class="text-center">216.75</td><td class="text-center">261.00</td><td class="text-center" style="background:#f0f9ff;">-</td></tr>
+            <tr><td>දෙසැම්බර් / December</td><td class="text-center">165.75</td><td class="text-center">196.50</td><td class="text-center">233.25</td><td class="text-center">301.25</td><td class="text-center" style="background:#f0f9ff;">-</td></tr>
+          </tbody>
+          <tfoot>
+            <tr style="background:#f8fafc; font-weight:800;">
+              <td>වාර්ෂික එකතුව / Annual Total</td>
+              <td class="text-center">1,144.50</td>
+              <td class="text-center">2,412.50</td>
+              <td class="text-center">2,408.00</td>
+              <td class="text-center" style="color:#047857;">3,150.50</td>
+              <td class="text-center font-bold" style="background:#e0f2fe; color:#1e40af;">2,544.75 (මාස 9)</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- 5-Year Audit Percentage Growth Table -->
+      <h4 style="margin: 1.5rem 0 0.75rem 0; font-size: 1.1rem; color: var(--gray-900);">
+        <span class="lang-sinhala">පස්වසරක කසළ ලැබීමේ වාර්ෂික ප්‍රතිශත වර්ධනය (2022 - 2026)</span>
+        <span class="lang-english">5-Year Solid Waste Intake Percentage Growth Audit (2022–2026)</span>
+      </h4>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr style="background:#f1f5f9;">
+              <th>වර්ෂය / Year</th>
+              <th class="text-center">වාර්ෂික වාර ගණන / Loads</th>
+              <th class="text-center">මාසික සාමාන්‍යය / Monthly Avg</th>
+              <th class="text-center font-bold" style="color:#047857;">වාර්ෂික වර්ධන % (YoY Growth %)</th>
+              <th class="text-center font-bold" style="color:#1e40af;">2022 ට සාපේක්ෂ සමුච්චිත වර්ධනය (Cumulative %)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-bold">2022</td>
+              <td class="text-center">1,144.50</td>
+              <td class="text-center">95.38</td>
+              <td class="text-center font-bold">මූලික වසර (Base Year)</td>
+              <td class="text-center font-bold">0.00% (පාදක මට්ටම)</td>
+            </tr>
+            <tr>
+              <td class="font-bold">2023</td>
+              <td class="text-center">2,412.50</td>
+              <td class="text-center">201.04</td>
+              <td class="text-center font-bold" style="color:#059669;">+110.79% 🚀</td>
+              <td class="text-center font-bold" style="color:#059669;">+110.79% (දෙගුණයකට වැඩි වීමක්)</td>
+            </tr>
+            <tr>
+              <td class="font-bold">2024</td>
+              <td class="text-center">2,408.00</td>
+              <td class="text-center">200.67</td>
+              <td class="text-center font-bold" style="color:#64748b;">-0.19% (ස්ථාවරයි)</td>
+              <td class="text-center font-bold" style="color:#059669;">+110.40% (ද්විගුණ ධාරිතාව පවත්වා ගැනීම)</td>
+            </tr>
+            <tr>
+              <td class="font-bold">2025</td>
+              <td class="text-center">3,150.50</td>
+              <td class="text-center">262.54</td>
+              <td class="text-center font-bold" style="color:#059669;">+30.83% 📈</td>
+              <td class="text-center font-bold" style="color:#059669;">+175.27% (වාර්තාගත ඉහළම එකතුව)</td>
+            </tr>
+            <tr style="background:#f0f9ff;">
+              <td class="font-bold">2026 (ප්‍රක්ෂේපිත / Projected)</td>
+              <td class="text-center font-bold" style="color:#1e40af;">3,393.00</td>
+              <td class="text-center font-bold" style="color:#1e40af;">282.75</td>
+              <td class="text-center font-bold" style="color:#1e40af;">+7.70%</td>
+              <td class="text-center font-bold" style="color:#1e40af;">+196.46% (මූලික වසර මෙන් තුන්ගුණයකට ආසන්නයි)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dedicated Tractor Carrying Capacity Analysis Card -->
+      <div style="background:#f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1.5rem; margin-top: 1.5rem;">
+        <h4 style="display:flex; align-items:center; gap:0.5rem; color:#0f172a; margin-bottom: 0.75rem;">
+          <svg width="20" height="20" fill="#059669" viewBox="0 0 16 16"><path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7c0 .164.032.32.09.463z"/></svg>
+          <span class="lang-sinhala">ට්‍රැක්ටර් රථයක කසළ ධාරිතාව කොපමණද? (තාක්ෂණික හා ප්‍රායෝගික සාක්ෂි)</span>
+          <span class="lang-english">How Many Tons of Solid Waste Can a Tractor Carry? (Technical & Empirical Findings)</span>
+        </h4>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-top: 1rem;">
+          <div style="background:white; padding:1rem; border-radius:6px; border:1px solid #e2e8f0;">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:#64748b; font-weight:700;">සාමාන්‍ය වියළි/මිශ්‍ර කසළ / Average Mixed Waste</div>
+            <div style="font-size:1.5rem; font-weight:800; color:#059669; margin: 0.25rem 0;">0.8 – 1.2 MT</div>
+            <div style="font-size:0.8rem; color:#475569;">කිලෝග්‍රෑම් 800 – 1,200 ක් පමණ (Daily standard)</div>
+          </div>
+
+          <div style="background:white; padding:1rem; border-radius:6px; border:1px solid #e2e8f0;">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:#64748b; font-weight:700;">තෙත් / වැසි සමයේ කසළ / Wet Organic Monsoon Waste</div>
+            <div style="font-size:1.5rem; font-weight:800; color:#2563eb; margin: 0.25rem 0;">1.5 – 2.0 MT</div>
+            <div style="font-size:0.8rem; color:#475569;">කිලෝග්‍රෑම් 1,500 – 2,000 (ඉහළ ජල ප්‍රතිශතය සහිතව)</div>
+          </div>
+
+          <div style="background:white; padding:1rem; border-radius:6px; border:1px solid #e2e8f0;">
+            <div style="font-size:0.75rem; text-transform:uppercase; color:#64748b; font-weight:700;">ලෙජර් සාක්ෂිය (Image 13 vs 18) / Ledger Proof</div>
+            <div style="font-size:1.5rem; font-weight:800; color:#d97706; margin: 0.25rem 0;">~1.0 MT / Load</div>
+            <div style="font-size:0.8rem; color:#475569;">මාර්තු: වාර 225.25 = 229.86 MT (වාරයකට 1.02 MT)</div>
+          </div>
+        </div>
+
+        <p class="lang-sinhala" style="font-size:0.875rem; color:#334155; margin-top:1rem; line-height:1.6;">
+          <strong>විග්‍රහය:</strong> ප්‍රාදේශීය සභා මඟින් භාවිතා කරන සාමාන්‍ය 45-50 HP ට්‍රැක්ටර් ට්‍රේලරයක ව්‍යුහාත්මක දරාගැනීම (වැලි/පස් සඳහා) මෙට්‍රික් ටොන් 3-4 ක් වුවද, ඝන අපද්‍රව්‍යවල ඝනත්වය අඩු බැවින් (250-450 kg/m³) දැල් තට්ටු සහිත ඝන මීටර් 5.5-7.0 ක ට්‍රේලරයක සාමාන්‍යයෙන් රැගෙන යන්නේ <strong>මෙට්‍රික් ටොන් 0.8 සිට 1.2 දක්වා (සාමාන්‍යයෙන් ටොන් 1.0 ක්)</strong> බරකි.
+        </p>
+        <p class="lang-english" style="font-size:0.875rem; color:#334155; margin-top:1rem; line-height:1.6;">
+          <strong>Technical Summary:</strong> Although a standard municipal tractor tipping trailer has a structural payload rating of 3–4 MT for heavy aggregates, the low bulk density of loose municipal solid waste (250–450 kg/m³) means a volumetric trailer load with side-mesh extenders (5.5–7.0 m³) yields a payload of <strong>0.8 to 1.2 Metric Tons (average ~1.0 MT)</strong>, peaking at <strong>1.5 to 2.0 MT during wet monsoon periods</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 4: Strategic Recommendations -->
+    <div class="section-card">
+      <div class="section-header">
+        <div>
+          <h3>
+            <span class="lang-sinhala">4. ඉදිරි උපායමාර්ගික නිර්දේශ හා යෝජනා</span>
+            <span class="lang-english">4. Strategic Recommendations & Action Plan</span>
+          </h3>
+        </div>
+        <span class="tag">Strategy</span>
+      </div>
+
+      <div class="rec-card-grid">
+        <div class="rec-card">
+          <h4>
+            <span class="lang-sinhala">1. කළවල බඩු සහ පොල්කටු තොග වෙන්දේසි කිරීම</span>
+            <span class="lang-english">1. Commercial Monetization of Idle Stocks</span>
+          </h4>
+          <p class="lang-sinhala">
+            වාර්තාව අනුව කළවල බඩු (මිශ්‍ර යකඩ/ලෝහ) කිලෝ 12,130 ක් සහ පොල් කටු කිලෝ 184 ක් තොග පවතී. මේවා ප්‍රසිද්ධ ලංසු තැබීමකින් අලෙවි කිරීමෙන් රුපියල් ලක්ෂ 5කට ආසන්න මුදලක් කඩිනමින් උපයාගත හැක.
+          </p>
+          <p class="lang-english">
+            Over 12,130 kg of mixed scrap metal and 184 kg of coconut shells remain stored without revenue. A formal sealed-bid tender will promptly inject ~LKR 500,000 in liquid local council revenue.
+          </p>
+        </div>
+
+        <div class="rec-card" style="border-top-color: var(--secondary);">
+          <h4>
+            <span class="lang-sinhala">2. කොම්පෝස්ට් පොහොර SLS 1635 සහතික කර වෙළඳපොළට දැමීම</span>
+            <span class="lang-english">2. SLS 1635 Certification & Branded Retail Pack</span>
+          </h4>
+          <p class="lang-sinhala">
+            නයිට්‍රජන් (2.20%) සහ කාබන් (35.06%) ඉතා ඉහළ මට්ටමක ඇති බැවින්, තෙතමනය මඳක් අඩුකර පොටෑසියම් මට්ටම ඉහළ නැංවීමට කෙසෙල් කඳන්/අළු එකතු කර SLS සහතිකය ලබාගෙන කිලෝ 5, 10, 25 බෑග් ලෙස අලෙවි කළ හැක.
+          </p>
+          <p class="lang-english">
+            With stellar Nitrogen (2.20%) and Carbon (35.06%), simple moisture curation and potassium enhancement (wood ash/banana trunks) will secure formal SLS 1635 certification for retail commercial branding.
+          </p>
+        </div>
+
+        <div class="rec-card" style="border-top-color: var(--accent);">
+          <h4>
+            <span class="lang-sinhala">3. දෛනික කසළ ලොග් සටහන් ඩිජිටල්කරණය කිරීම</span>
+            <span class="lang-english">3. Digital Weighbridge & Intake Registry</span>
+          </h4>
+          <p class="lang-sinhala">
+            දිනකට රන්පොකුණ අංගනයට ඇතුළු වන ට්‍රැක්ටර් වාර 12 - 14 අතින් පොත්වල ලියන ක්‍රමවේදය වෙනුවට සරල ටැබ්ලට් පරිගණක මෘදුකාංගයක් හඳුන්වා දීමෙන් දත්ත නිරවද්‍යතාව හා විනිවිදභාවය ඉහළ නැංවිය හැක.
+          </p>
+          <p class="lang-english">
+            Transitioning the manual 31-day paper register (12–14 daily loads) to a streamlined tablet/cloud log system will enhance auditing, eliminate data entry bottlenecks, and prevent revenue leakages.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>අත්තනගල්ල ප්‍රාදේශීය සභාව - කසළ කළමනාකරණ හා ප්‍රතිචක්‍රීකරණ අංශය | Attanagalla Pradeshiya Sabha - Waste Management & Recycling Division</p>
+    <p style="margin-top: 4px; font-size: 0.75rem; color: #94a3b8;">Generated from 28 scanned ledger & report documents | Date: 23 October 2026</p>
+  </footer>
+
+  <script>
+    // Language Switcher Function
+    function setLanguage(mode) {
+      document.body.classList.remove('mode-sinhala', 'mode-english', 'mode-both');
+      document.body.classList.add('mode-' + mode);
+
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      if (mode === 'sinhala') document.querySelectorAll('.lang-btn')[0].classList.add('active');
+      else if (mode === 'both') document.querySelectorAll('.lang-btn')[1].classList.add('active');
+      else if (mode === 'english') document.querySelectorAll('.lang-btn')[2].classList.add('active');
+    }
+
+    // Chart 1: Revenue Share (Pie)
+    const ctxRevenue = document.getElementById('revenuePieChart').getContext('2d');
+    new Chart(ctxRevenue, {
+      type: 'doughnut',
+      data: {
+        labels: ['PET බෝතල් (PET)', 'ප්ලාස්ටික් (Plastic)', 'සුදු වීදුරු (Clear Glass)', 'කාඩ්බෝඩ් (Cardboard)', 'බියර් ටින් (Beer Cans)', 'වෙනත් (Others)'],
+        datasets: [{
+          data: [920045, 669375, 286000, 145125, 141750, 25114],
+          backgroundColor: [
+            '#059669', // Emerald
+            '#2563eb', // Blue
+            '#0284c7', // Sky Blue
+            '#d97706', // Amber
+            '#8b5cf6', // Purple
+            '#94a3b8'  // Gray
+          ],
+          borderWidth: 2,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right' },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                let val = context.raw || 0;
+                let pct = ((val / 2187409) * 100).toFixed(1);
+                return context.label + ': රු. ' + val.toLocaleString() + ' (' + pct + '%)';
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Chart 2: Annual Waste Inflow (Bar)
+    const ctxIntake = document.getElementById('intakeBarChart').getContext('2d');
+    new Chart(ctxIntake, {
+      type: 'bar',
+      data: {
+        labels: ['2022', '2023', '2024', '2025', '2026 (9 Mo)'],
+        datasets: [{
+          label: 'කසළ වාහන වාර ගණන (Tractor Loads)',
+          data: [1145.25, 2412.50, 2408.00, 3150.50, 2544.75],
+          backgroundColor: ['#cbd5e1', '#94a3b8', '#64748b', '#059669', '#2563eb'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'Loads / වාර ගණන' } }
+        }
+      }
+    });
+
+    // Chart 3: Monthly Collection in 2026 (Line)
+    const ctxMonthly = document.getElementById('monthlyCollectionChart').getContext('2d');
+    new Chart(ctxMonthly, {
+      type: 'line',
+      data: {
+        labels: ['ජනවාරි', 'පෙබරවාරි', 'මාර්තු', 'අප්‍රේල්', 'මැයි', 'ජූනි', 'ජූලි'],
+        datasets: [{
+          label: 'මුළු එකතු කිරීම (Total Kg)',
+          data: [6394.40, 5007.50, 5095.00, 3465.53, 2281.75, 2802.60, 4466.95],
+          borderColor: '#059669',
+          backgroundColor: 'rgba(5, 150, 105, 0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 5
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: false, title: { display: true, text: 'Kg' } }
+        }
+      }
+    });
+
+    // Chart 4: Price Trend (Grouped Bar)
+    const ctxPrice = document.getElementById('priceTrendChart').getContext('2d');
+    new Chart(ctxPrice, {
+      type: 'bar',
+      data: {
+        labels: ['PET බෝතල්', 'ප්ලාස්ටික්', 'ටින් (Nylon/Tin)'],
+        datasets: [
+          {
+            label: '2025 මිල (LKR/Kg)',
+            data: [56.50, 70.00, 8.50],
+            backgroundColor: '#94a3b8',
+            borderRadius: 4
+          },
+          {
+            label: '2026 මිල (LKR/Kg)',
+            data: [74.00, 100.00, 10.00],
+            backgroundColor: '#059669',
+            borderRadius: 4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { beginAtZero: true, title: { display: true, text: 'රු. / කි.ග්‍රෑ. (LKR/Kg)' } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "attanagalla-waste-management-ocr",
+  "version": "1.0.0",
+  "description": "Comprehensive OCR, data extraction, audit, and bilingual reporting dashboard for Attanagalla Pradeshiya Sabha solid waste management, recycling, and organic compost production.",
+  "main": "Attanagalla_Waste_Management_Report.html",
+  "scripts": {
+    "start": "start Attanagalla_Waste_Management_Report.html",
+    "view": "python -m http.server 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhzahjr07/document_ocr_azad.git"
+  },
+  "keywords": [
+    "waste-management",
+    "recycling",
+    "sri-lanka",
+    "attanagalla-pradeshiya-sabha",
+    "compost-production",
+    "ocr-data-extraction",
+    "bilingual-report",
+    "circular-economy",
+    "local-government",
+    "data-analytics"
+  ],
+  "author": "Muhammad Zaharan <frm.zaharan.jr@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/muhzahjr07/document_ocr_azad/issues"
+  },
+  "homepage": "https://github.com/muhzahjr07/document_ocr_azad#readme"
+}
